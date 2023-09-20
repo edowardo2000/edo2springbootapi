@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/katbarang")
+@RequestMapping("/api/op/katbarang")
 public class KategoriBarangController {
 
     @Autowired

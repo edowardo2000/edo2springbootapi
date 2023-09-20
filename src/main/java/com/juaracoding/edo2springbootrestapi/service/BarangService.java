@@ -23,6 +23,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,7 +37,7 @@ import java.util.Optional;
     Modul Code 002
  */
 @Service
-@Transactional
+//@Transactional
 public class BarangService implements IService<Barang> {
 
     private BarangRepo barangRepo;
@@ -45,6 +46,9 @@ public class BarangService implements IService<Barang> {
     private Map<String,Object> mapz = new HashMap<>();
     @Autowired
     private LogRequestRepo logRequestRepo;
+
+    @Autowired
+    private LogService logService;
     private ModelMapper modelMapper;
 
     public BarangService(BarangRepo barangRepo) {
@@ -74,6 +78,7 @@ public class BarangService implements IService<Barang> {
 
         try{
             barangRepo.save(barang);
+
         }catch (Exception e)
         {
             strExceptionArr[1] = "save(Barang barang, HttpServletRequest request) --- LINE 59 \n"+ RequestCapture.allRequest(request);
@@ -404,7 +409,6 @@ public class BarangService implements IService<Barang> {
     @Override
     public ResponseEntity<Object> dataToExport(MultipartFile multipartFile, HttpServletRequest request) {
         try{
-
             if(!CsvReader.isCsv(multipartFile))
             {
                 return new ResponseHandler().generateResponse(

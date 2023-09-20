@@ -12,7 +12,7 @@ import javax.validation.Valid;
 import java.util.*;
 
 @RestController
-@RequestMapping("/api/peserta/")
+@RequestMapping("/api/op/peserta/")
 public class PesertaController {
 
     @Autowired

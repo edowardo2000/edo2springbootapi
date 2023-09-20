@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/person")
+@RequestMapping("/api/op/person")
 public class PersonController {
 
     private PersonService personService;

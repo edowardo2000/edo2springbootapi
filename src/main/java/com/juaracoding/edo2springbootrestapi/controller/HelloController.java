@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/hello")
+@RequestMapping("/api/op/hello")
 public class HelloController {
 
 //    localhost:8080/hello/permisi

@@ -11,7 +11,6 @@ public class Usr {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IDUser")
     private Long idUser;
-
     @Column(name = "UserName",unique = true)
     private String userName;
 
@@ -40,10 +39,10 @@ public class Usr {
     private Integer umur;
 
     @Column(name = "CreatedBy",columnDefinition = "BIGINT NOT NULL default 0")
-    private Long createdBy;
+    private Long createdBy = 1L;
 
     @Column(name = "CreatedDate",columnDefinition = "DATETIME NOT NULL default GETDATE()")
-    private Date createdDate;
+    private Date createdDate = new Date();
 
     @Column(name = "ModifiedBy")
     private Long modifiedBy;
@@ -174,3 +173,4 @@ public class Usr {
         this.token = token;
     }
 }
+

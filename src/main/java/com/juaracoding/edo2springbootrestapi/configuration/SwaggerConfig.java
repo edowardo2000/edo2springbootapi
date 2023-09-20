@@ -39,7 +39,7 @@ public class SwaggerConfig {
                 "Springboot bootcamp Juaracoding ",//descriptions
                 "v1.0",//version
                 "Term Of Services URL is On Progress",//termsOfServiceUrl
-                new Contact("Paul Christian","localhost:8080/api/v1","poll.chihuy@gmail.com"),//Contact Name
+                new Contact("Edowardo","localhost:8080/api/v1","edowardotan@gmail.com"),//Contact Name
                 "Springboot Open Source License",//license
                 "https://spring.io/",//licenseUrl
                 Collections.emptyList()

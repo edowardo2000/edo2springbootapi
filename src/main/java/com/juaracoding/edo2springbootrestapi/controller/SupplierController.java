@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/supplier")
+@RequestMapping("/api/op/supplier")
 public class SupplierController {
 
     private ModelMapper modelMapper;

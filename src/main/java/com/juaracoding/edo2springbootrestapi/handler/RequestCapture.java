@@ -3,16 +3,16 @@ package com.juaracoding.edo2springbootrestapi.handler;
 import com.google.gson.Gson;
 import org.json.simple.JSONObject;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.util.ContentCachingRequestWrapper;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.Charset;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class RequestCapture {
 
@@ -48,10 +48,12 @@ public class RequestCapture {
         return strValue;
     }
 
-    public static String allRequest(HttpServletRequest request)
+    public static String allRequest(HttpServletRequest requestx)
     {
+        ContentCachingRequestWrapper request = new ContentCachingRequestWrapper(requestx);
         String headerName = "";
         String paramName = "";
+        String test = "";
         Map<String,Object> requestz = new HashMap<>();
         Map<String,Object> reqParam = new HashMap<>();
         Map<String,Object> reqHeader = new HashMap<>();
@@ -83,36 +85,58 @@ public class RequestCapture {
         requestz.put("reqHeader",reqHeader);
         requestz.put("reqParam",reqParam);
 
-//        try {
-//            requestz.put("reqBody",readInputStreamInStringFormat(request.getInputStream(),Charset.defaultCharset()));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
+        try {
+            if ("POST".equalsIgnoreCase(request.getMethod()))
+            {
+                requestz.put("reqBody",readInputString(request));
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         String strValue = new JSONObject(requestz).toString();
 //        System.out.println(strValue);
         return strValue;
     }
 
-    private static String readInputStreamInStringFormat(InputStream stream, Charset charset) throws IOException {
-        final int MAX_BODY_SIZE = 1024;
-        final StringBuilder bodyStringBuilder = new StringBuilder();
-        if (!stream.markSupported()) {
-            stream = new BufferedInputStream(stream);
-        }
+    private static String readInputString(HttpServletRequest request)
+    {
+        StringBuilder sb = new StringBuilder();
+        BufferedReader reader = null;
+        String requestBody;
 
-        stream.mark(MAX_BODY_SIZE + 1);
-        final byte[] entity = new byte[MAX_BODY_SIZE + 1];
-        final int bytesRead = stream.read(entity);
-
-        if (bytesRead != -1) {
-            bodyStringBuilder.append(new String(entity, 0, Math.min(bytesRead, MAX_BODY_SIZE), charset));
-            if (bytesRead > MAX_BODY_SIZE) {
-                bodyStringBuilder.append("...");
+        try {
+            reader = request.getReader();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line);
             }
+            requestBody = sb.toString();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        stream.reset();
 
-        return bodyStringBuilder.toString();
+        return requestBody;
     }
+//    private static String readInputStreamInStringFormat(InputStream stream, Charset charset) throws IOException {
+//        final int MAX_BODY_SIZE = 1024;
+//        final StringBuilder bodyStringBuilder = new StringBuilder();
+//        if (!stream.markSupported()) {
+//            stream = new BufferedInputStream(stream);
+//        }
+//
+//        stream.mark(MAX_BODY_SIZE + 1);
+//        final byte[] entity = new byte[MAX_BODY_SIZE + 1];
+//        final int bytesRead = stream.read(entity);
+//
+//        if (bytesRead != -1) {
+//            bodyStringBuilder.append(new String(entity, 0, Math.min(bytesRead, MAX_BODY_SIZE), charset));
+//            if (bytesRead > MAX_BODY_SIZE) {
+//                bodyStringBuilder.append("...");
+//            }
+//        }
+//        stream.reset();
+//
+//        return bodyStringBuilder.toString();
+//    }
 }
